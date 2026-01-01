@@ -7,3 +7,4 @@ numpy>=1.24.0
 maturin>=1.0.0
 # huggingface_hub is optional but useful for clients
 huggingface_hub
+torch>=2.0.0
