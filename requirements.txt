@@ -1,0 +1,9 @@
+fastapi>=0.115.2
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+gradio==5.9.1
+requests==2.31.0
+numpy>=1.24.0
+maturin>=1.0.0
+# huggingface_hub is optional but useful for clients
+huggingface_hub

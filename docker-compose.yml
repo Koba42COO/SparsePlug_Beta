@@ -1,0 +1,106 @@
+# Prime-Sparse SaaS - Docker Compose for Production
+version: "3.9"
+
+services:
+  # ============== API Service ==============
+  api:
+    image: prime-sparse-api:${VERSION:-latest}
+    container_name: prime-sparse-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - SENTRY_DSN=${SENTRY_DSN}
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+        reservations:
+          cpus: "0.5"
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - prime-sparse-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============== Celery Worker ==============
+  worker:
+    image: prime-sparse-api:${VERSION:-latest}
+    container_name: prime-sparse-worker
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+    command: celery -A worker.tasks worker --loglevel=info --concurrency=4
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8G
+        reservations:
+          cpus: "1"
+          memory: 2G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    networks:
+      - prime-sparse-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============== Celery Beat (Scheduler) ==============
+  beat:
+    image: prime-sparse-api:${VERSION:-latest}
+    container_name: prime-sparse-beat
+    environment:
+      - APP_ENV=production
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+    command: celery -A worker.tasks beat --loglevel=info
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - prime-sparse-network
+
+networks:
+  prime-sparse-network:
+    driver: overlay

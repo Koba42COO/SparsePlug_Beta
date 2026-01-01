@@ -1,0 +1,100 @@
+# UPG-PAC v2.0.0 .dockerignore
+# Exclude unnecessary files from Docker build context
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+test_output.txt
+
+# Development files
+*.md
+!README.md
+docs/
+tests/
+benchmarks/
+scripts/
+history/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Environment
+.env
+.env.local
+*.env
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+.DS_Store
+
+# Model files (keep only demo_flagship.upgpac)
+*.upgpac
+!demo_flagship.upgpac
+
+# Rust build artifacts (will be built in container)
+core/upg_kernel/target/
+core/upg_kernel/Cargo.lock
+
+# Frontend (not needed in container)
+frontend/
+demo/
+converter-pwa/
+
+# Deployment configs
+deploy/
+kubernetes/
+snap/
+
+# Worker/Celery (if separate service)
+worker/
+
+# Optimization results
+optimization/
+*.pt
+*.pth
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+

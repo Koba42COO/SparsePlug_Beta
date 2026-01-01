@@ -1,0 +1,18 @@
+services:
+  # SparsePlug Production API
+  - type: web
+    name: sparseplug-api
+    env: docker
+    dockerfilePath: ./Dockerfile.production
+    plan: free  # Free tier: 750 hours/month
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: LOG_LEVEL
+        value: info
+    # Auto-deploy from GitHub
+    autoDeploy: true

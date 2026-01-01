@@ -1,0 +1,16 @@
+# Copyright (c) 2025 Koba42 Technologies
+# SparsePlug™ - Variable Compression Platform
+# 
+# This file is part of SparsePlug, a proprietary software platform.
+# 
+# License: CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International)
+# 
+# You may use this software for non-commercial purposes only.
+# Commercial use requires a separate license agreement.
+# 
+# Contact: licensing@sparseplug.ai
+# 
+# NOTICE: The algorithms and techniques implemented in this software are
+# protected by copyright and may be subject to patent protection.
+# Unauthorized commercial use, reverse engineering, or redistribution
+# is strictly prohibited.
