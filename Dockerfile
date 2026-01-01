@@ -44,3 +44,4 @@ HEALTHCHECK --interval=30s --timeout=5s \
 
 # Start adaptive server
 CMD uvicorn adaptive_server:app --host 0.0.0.0 --port ${PORT} --workers 1
+# Cache bust: 1767287435
