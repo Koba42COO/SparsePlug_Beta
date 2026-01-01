@@ -1,0 +1,16 @@
+
+[package]
+name = "upg_kernel"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "upg_kernel"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20.0", features = ["extension-module"] }
+candle-core = "0.8.0"
+candle-nn = "0.8.0"
+numpy = "0.20.0"
+thiserror = "1.0"
